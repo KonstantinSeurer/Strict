@@ -1,0 +1,24 @@
+
+using Memory.Allocator;
+
+public singleton SystemAllocator : Allocator
+{
+	// only works on 64-bit computers
+	private external void* malloc(UInt64 size);
+	private external void free(void* address);
+
+	public void* Allocate(UInt64 size) mut
+	{
+		void* result = malloc(size);
+		if (result == null)
+		{
+			throw OutOfMemoryError;
+		}
+		return result;
+	}
+
+	public void Free(void* address, UInt64 size) mut
+	{
+		free(address);
+	}
+}

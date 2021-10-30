@@ -30,6 +30,9 @@
 | `DO`       | `do`       |             |
 | `BREAK`    | `break`    |             |
 | `CONTINUE` | `continue` |             |
+| `TRY`      | `try`      |             |
+| `CATCH`    | `catch`    |             |
+| `THROW`    | `throw`    |             |
 
 ### Structure
 
@@ -41,8 +44,11 @@
 | `INTERNAL`  | `internal`  |             |
 | `MUT`       | `mut`       |             |
 | `IMPURE`    | `impure`    |             |
+| `VIRTUAL`   | `virtual`   |             |
 | `CLASS`     | `class`     |             |
 | `SINGLETON` | `singleton` |             |
+| `TYPE`      | `type`      |             |
+| `ERROR`     | `error`     |             |
 | `USING`     | `using`     |             |
 | `GET`       | `get`       |             |
 | `SET`       | `set`       |             |
@@ -50,12 +56,13 @@
 
 ### Literals
 
-| Token            | Regex | Description |
-| ---------------- | ----- | ----------- |
-| `INT_LITERAL`    |       |             |
-| `FLOAT_LITERAL`  |       |             |
-| `STRING_LITERAL` |       |             |
-| `BOOL_LITERAL`   |       |             |
+| Token            | Regex  | Description |
+| ---------------- | ------ | ----------- |
+| `INT_LITERAL`    |        |             |
+| `FLOAT_LITERAL`  |        |             |
+| `STRING_LITERAL` |        |             |
+| `BOOL_LITERAL`   |        |             |
+| `NULL_LITERAL`   | `null` |             |
 
 ### Other symbols
 
