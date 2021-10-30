@@ -42,6 +42,7 @@
 | `PRIVATE`   | `private`   |             |
 | `PROTECTED` | `protected` |             |
 | `INTERNAL`  | `internal`  |             |
+| `EXTERNAL`  | `external`  |             |
 | `MUT`       | `mut`       |             |
 | `IMPURE`    | `impure`    |             |
 | `VIRTUAL`   | `virtual`   |             |
@@ -87,8 +88,8 @@
 | `OR`           | `|`   |             |
 | `NOT`          | `!`   |             |
 | `QUESTIONMARK` | `\?`  |             |
-| `QUOTE`        | `'`   |             |
-| `DOUBLE_QUOTE` | `"`   |             |
 | `EQUALS`       | `=`   |             |
+| `LESS`         | `<`   |             |
+| `GREATER`      | `>`   |             |
 
 Language concepts
