@@ -33,6 +33,7 @@
 | `TRY`      | `try`      |             |
 | `CATCH`    | `catch`    |             |
 | `THROW`    | `throw`    |             |
+| `RETURN`   | `return`   |             |
 
 ### Structure
 
@@ -57,13 +58,12 @@
 
 ### Literals
 
-| Token            | Regex  | Description |
-| ---------------- | ------ | ----------- |
-| `INT_LITERAL`    |        |             |
-| `FLOAT_LITERAL`  |        |             |
-| `STRING_LITERAL` |        |             |
-| `BOOL_LITERAL`   |        |             |
-| `NULL_LITERAL`   | `null` |             |
+| Token            | Regex | Description |
+| ---------------- | ----- | ----------- |
+| `INT_LITERAL`    |       |             |
+| `UINT_LITERAL`   |       |             |
+| `FLOAT_LITERAL`  |       |             |
+| `STRING_LITERAL` |       |             |
 
 ### Other symbols
 
