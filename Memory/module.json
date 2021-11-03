@@ -1,8 +1,48 @@
 
 {
 	"type": "STATIC",
-	"externals":
+	"targets":
 	[
-
+		{
+			"exports":
+			[
+				"OutOfMemoryError.strict",
+				"Allocator.strict"
+			]
+		},
+		{
+			"flags":
+			[
+				"BIT32"
+			],
+			"exports":
+			[
+				"SystemAllocator.strict"
+			]
+		},
+		{
+			"flags":
+			[
+				"BIT32",
+				"X86",
+				"LINUX"
+			],
+			"externals":
+			[
+				"x86_32/linux/externals.o"
+			]
+		},
+		{
+			"flags":
+			[
+				"BIT64",
+				"X86",
+				"LINUX"
+			],
+			"externals":
+			[
+				"x86_64/linux/externals.o"
+			]
+		}
 	]
 }

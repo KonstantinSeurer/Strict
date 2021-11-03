@@ -3,13 +3,12 @@ using Memory.Allocator;
 
 public singleton SystemAllocator : Allocator
 {
-	// only works on 64-bit computers
-	private external void* malloc(UInt64 size);
-	private external void free(void* address);
+	private external void* AllocateImplementation(UInt64 size);
+	private external void FreeImplementation(void* address);
 
 	public void* Allocate(UInt64 size) mut
 	{
-		void* result = malloc(size);
+		void* result = AllocateImplementation(size);
 		if (result == null)
 		{
 			throw OutOfMemoryError;
@@ -19,6 +18,6 @@ public singleton SystemAllocator : Allocator
 
 	public void Free(void* address, UInt64 size) mut
 	{
-		free(address);
+		FreeImplementation(address);
 	}
 }
