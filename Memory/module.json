@@ -7,16 +7,7 @@
 			"exports":
 			[
 				"OutOfMemoryError.strict",
-				"Allocator.strict"
-			]
-		},
-		{
-			"flags":
-			[
-				"BIT32"
-			],
-			"exports":
-			[
+				"Allocator.strict",
 				"SystemAllocator.strict"
 			]
 		},
