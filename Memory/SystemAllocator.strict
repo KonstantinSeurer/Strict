@@ -1,5 +1,5 @@
 
-using Memory.Allocator;
+using Strict.Memory.Allocator;
 
 public singleton SystemAllocator : Allocator
 {
