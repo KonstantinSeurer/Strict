@@ -6,9 +6,9 @@
 		{
 			"exports":
 			[
-				"OutOfMemoryError.strict",
-				"Allocator.strict",
-				"SystemAllocator.strict"
+				"OutOfMemoryError",
+				"Allocator",
+				"SystemAllocator"
 			]
 		},
 		{
