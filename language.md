@@ -89,7 +89,7 @@
 | `AND`          | `&`   |                                                              |
 | `OR`           | `|`   |                                                              |
 | `NOT`          | `!`   |                                                              |
-| `QUESTIONMARK` | `\?`  |                                                              |
+| `QUESTIONMARK` | `\?`  | exports                                                      |
 | `EQUALS`       | `=`   |                                                              |
 | `LESS`         | `<`   |                                                              |
 | `GREATER`      | `>`   |                                                              |
@@ -106,7 +106,46 @@ A module is a translation unit that can:
 - Have other modules as dependencies
 - Can have dependencies to external C libraries
 
-The module information is stored in a `module.json` file located at the root of the module directory (example: `Strict/Memory/module.json`).
+The module information is stored in a `module.json` file located at the root of the module directory (example: `Strict/Memory/module.json`). Example:
+
+```json
+{
+	"type": "INLINE", // Module is linked inline
+	"units": // List of units that are part of this module
+	[
+		"OutOfMemoryError",
+		"Allocator",
+		"SystemAllocator"
+	],
+	"targets": // Platform dependent information
+	[
+		{
+			"flags": // Targets are active if their flags are a sub set of the build target flags
+			[
+				"BIT32",
+				"X86",
+				"LINUX"
+			],
+			"externals": // External libraries
+			[
+				"x86_32/linux/externals.o"
+			]
+		},
+		{
+			"flags":
+			[
+				"BIT64",
+				"X86",
+				"LINUX"
+			],
+			"externals":
+			[
+				"x86_64/linux/externals.o"
+			]
+		}
+	]
+}
+```
 
 #### Units
 

@@ -1,16 +1,14 @@
 
 {
 	"type": "STATIC",
+	"units":
+	[
+		"OutOfMemoryError",
+		"Allocator",
+		"SystemAllocator"
+	],
 	"targets":
 	[
-		{
-			"exports":
-			[
-				"OutOfMemoryError",
-				"Allocator",
-				"SystemAllocator"
-			]
-		},
 		{
 			"flags":
 			[
