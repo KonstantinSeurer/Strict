@@ -1,1 +1,4 @@
-Strict
+# Strict
+
+- [Language reference](language.md)
+
