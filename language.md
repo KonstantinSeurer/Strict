@@ -96,6 +96,14 @@
 
 ## Language concepts
 
+The grammer of the language is described using the following syntax:
+
+- `{TOKEN1 TOKEN2}`: A group of tokens or language constructs that are mandatory.
+-  `[TOKEN1 TOKEN2]`: A group of tokens or language constructs that are optional.
+- `TOKEN1|TOKEN2`: A arbitrary combination of the declared tokens or language constructs. (or)
+- `TOKEN1||TOKEN2`: Only one of the declared tokens or language constructs. (xor)
+- `...`: Can occur multiple times.
+
 ### Language structure
 
 #### Modules
@@ -153,7 +161,12 @@ A unit is a translation unit that can contains a class, singleton or error.
 
 #### Classes
 
-A data type that can have a set of member variables and methods.
+A data type that can have a set of member variables and methods. A class is declared the following way:
+
+```c++
+{PUBLIC|PRIVATE|PROTECTED|INTERNAL} [MUT] CLASS IDENTIFIER [Template] [COLON {IDENTIFIER [COMMA]}...] /* class body */
+// public mut class Array<type ElementType> : Collection<ElementType> { ... }
+```
 
 ##### Declarations
 
@@ -175,7 +188,7 @@ Possible visibility modifiers:
 Declarations can also have template parameters that are declared the following way:
 
 ```c++
-/* declaration data */ IDENTIFIER LESS {Type IDENTIFIER [,]} GREATER /* definition */
+/* declaration data */ IDENTIFIER LESS {{TYPE||Type} IDENTIFIER [COMMA]}... GREATER /* definition */
 // public Type Add<NumericType Type>(Type[] a, Type[] b, UInt64 count)
 ```
 
@@ -183,7 +196,83 @@ A template is a comma separated list of type name - name pairs. The type name ca
 
 ##### Fields
 
+A class member that can store data. A field can be declared `INLINE` which would mean, that it is an interface to access the class through getters and setters without storing any data. Fields are declared like this:
+
+```c++
+/* declaration data */ Type IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
+// public Int32 number { /* getters and setters */ } = 0;
+```
+
+A field can also specify a set of getter ans setters that are used to control read and write access to a field or implement the functionality of inline fields.
+
+Getter:
+
+- Can't be declared as `MUT` and inherits the visibility flags of the field declaration.
+
+```c++
+/* declaration data */ Type GET Body
+// public Int32 get { /* return data */ }
+```
+
+Setter:
+
+- Automatically has the `MUT` flag set and inherits the visibility flags of the field declaration.
+
+```c++
+/* declaration data */ Type SET ROUND_OB Type IDENTIFIER ROUND_CB Body
+// public Int32 set(Int32 newNumber) { /* set data */ }
+```
+
 ##### Methods
+
+A subroutine the is run in the context of a class. Declaration:
+
+```c++
+/* declaration data */ Type IDENTIFIER ROUND_OB Arguments ROUND_CB Body
+// public Int32 Sum<UInt64 count>(Int32[] array) { /* function body */ }
+```
+
+##### Constructors
+
+A constructor is a method that is used to initialize an object. The constructor is `MUT` by default and can be invoked in the declaration of immutable variables. Invoking a constructor outside of the variable declaration requires the variable to be mutable. There are two special types of constructor:
+
+- Default constructors are declared by default but can be overridden. When not overridden, a default constructor initializes every member to its default value:
+
+  | Types         | Default value                |
+  | ------------- | ---------------------------- |
+  | Integer types | 0                            |
+  | Float types   | 0.0                          |
+  | `BOOL`        | `false` (0)                  |
+  | Pointer types | `null`                       |
+  | Class types   | Invokes default constructor. |
+
+- Copy constructors are also declared by default and can be overridden. The default implementation copies every class member (using the copy constructor for class types).
+
+Constructor declaration:
+
+```c++
+/* declaration data */ IDENTIFIER ROUND_OB Arguments ROUND_CB [COLON {IDENTIFIER ROUND_OB Expression ROUND_CB [COMMA]}...] Body
+// public String(UInt16[] characters)
+//     : data(characters), length(StringHelper.length<UInt16>(characters)) { /* function body */ } // normal constructor
+// public String<IntegerType CharacterType>(CharacterType[] characters)
+//     : data(StringHelper.convertToUTF16<CharacterType>(characters),
+//       length(StringHelper.length<CharacterType>(characters) { /* function body */ } // templated constructor
+// public String() 
+//     : data(""), length(0) { /* function body */ } // default constructor
+// public String(String& string)
+//     : data(string.data), length(string.length) { /* function body */ } // copy constructor
+```
+
+##### Destructors
+
+Destructors are run at the end of the lifetime of a class, usually when exiting a scope or deleting a heap allocated object.
+
+Destructor declaration:
+
+```c++
+/* declaration data */ TILDE IDENTIFIER ROUND_OB ROUND_CB Body
+// public ~String() { /* function body */ }
+```
 
 ##### Singletons
 
