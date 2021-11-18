@@ -1,11 +1,14 @@
 
 {
-	"type": "STATIC",
+	"type": "INLINE",
 	"units":
 	[
 		"OutOfMemoryError",
+		"NullPointerError",
 		"Allocator",
-		"SystemAllocator"
+		"SystemAllocator",
+		"Shared",
+		"Unique"
 	],
 	"targets":
 	[

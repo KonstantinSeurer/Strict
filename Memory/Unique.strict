@@ -1,0 +1,44 @@
+
+using Strict.Memory.Allocator;
+using Strict.Memory.NullPointerError;
+
+public mut class Unique<type Type>
+{
+	private Type* data;
+	private Allocator* allocator;
+
+	public Unique(Allocator* allocator, Type* data)
+		: data(data), allocator(allocator)
+	{
+		if (data == null)
+		{
+			throw NullPointerError;
+		}
+	}
+
+	private Unique(Unique<Type>& pointer)
+	{
+		// unreachable
+	}
+
+	public Unique<type Type, type... ArgumentTypes>(Allocator* allocator, ArgumentTypes arguments)
+		: allocator(allocator)
+	{
+		data = allocator.New<Type, ArgumentTypes>(arguments);
+	}
+
+	~Unique()
+	{
+		allocator.Delete<Type>(data);
+	}
+
+	public operator Type*()
+	{
+		if (data == null)
+		{
+			throw NullPointerError;
+		}
+
+		return data;
+	}
+}
