@@ -69,30 +69,32 @@
 
 ### Other symbols
 
-| Token          | Regex | Description                                                  |
-| -------------- | ----- | ------------------------------------------------------------ |
-| `IDENTIFIER`   |       | Name of a type/constant/variable/... declared in the same unit or in a dependency. |
-| `ROUND_OB`     | `\(`  |                                                              |
-| `ROUND_CB`     | `\)`  |                                                              |
-| `CURLY_OB`     | `\{`  |                                                              |
-| `CURLY_CB`     | `\}`  |                                                              |
-| `SQUARE_OB`    | `\[`  |                                                              |
-| `SQUARE_CB`    | `\]`  |                                                              |
-| `PERIOD`       | `\.`  |                                                              |
-| `SEMICOLON`    | `;`   |                                                              |
-| `COLON`        | `:`   |                                                              |
-| `COMMA`        | `\,`  |                                                              |
-| `PLUS`         | `\+`  |                                                              |
-| `MINUS`        | `\-`  |                                                              |
-| `STAR`         | `\*`  |                                                              |
-| `SLASH`        | `/`   |                                                              |
-| `AND`          | `&`   |                                                              |
-| `OR`           | `|`   |                                                              |
-| `NOT`          | `!`   |                                                              |
-| `QUESTIONMARK` | `\?`  | exports                                                      |
-| `EQUALS`       | `=`   |                                                              |
-| `LESS`         | `<`   |                                                              |
-| `GREATER`      | `>`   |                                                              |
+| Token          | Regex    | Description                                                  |
+| -------------- | -------- | ------------------------------------------------------------ |
+| `IDENTIFIER`   |          | Name of a type/constant/variable/... declared in the same unit or in a dependency. |
+| `NEW`          | `new`    | Allocate a data type and optionally invoke the constructor.  |
+| `DELETE`       | `delete` | Free a pointer and invoke the destructor.                    |
+| `ROUND_OB`     | `\(`     |                                                              |
+| `ROUND_CB`     | `\)`     |                                                              |
+| `CURLY_OB`     | `\{`     |                                                              |
+| `CURLY_CB`     | `\}`     |                                                              |
+| `SQUARE_OB`    | `\[`     |                                                              |
+| `SQUARE_CB`    | `\]`     |                                                              |
+| `PERIOD`       | `\.`     |                                                              |
+| `SEMICOLON`    | `;`      |                                                              |
+| `COLON`        | `:`      |                                                              |
+| `COMMA`        | `\,`     |                                                              |
+| `PLUS`         | `\+`     |                                                              |
+| `MINUS`        | `\-`     |                                                              |
+| `STAR`         | `\*`     |                                                              |
+| `SLASH`        | `/`      |                                                              |
+| `AND`          | `&`      |                                                              |
+| `OR`           | `|`      |                                                              |
+| `NOT`          | `!`      |                                                              |
+| `QUESTIONMARK` | `\?`     | exports                                                      |
+| `EQUALS`       | `=`      |                                                              |
+| `LESS`         | `<`      |                                                              |
+| `GREATER`      | `>`      |                                                              |
 
 ## Language concepts
 

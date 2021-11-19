@@ -1,49 +1,40 @@
 
-using Strict.Memory.Allocator;
 using Strict.Memory.NullPointerError;
 
 public mut class Shared<type Type>
 {
 	private Type* data;
-	private Allocator* allocator;
-	private mut UInt32* internal referenceCount
-	{
-		public get()
-		{
-			return referenceCount;
-		}
-	};
+	private mut UInt32* internal referenceCount;
 
-	public Shared(Allocator* allocator, Type* data)
-		: data(data), allocator(allocator)
+	public Shared(Type* data)
+		: data(data)
 	{
-		if (data == null)
+		if (data)
 		{
-			throw NullPointerError;
+			referenceCount = allocator.New<UInt32, UInt32>(0);
 		}
-
-		referenceCount = allocator.New<UInt32, UInt32>(0);
 	}
 
 	public Shared(Shared<Type>& pointer)
 		: data(pointer.data), allocator(pointer.allocator), referenceCount(pointer.referenceCount)
 	{
-		referenceCount++;
-	}
-
-	public Shared<type Type, type... ArgumentTypes>(Allocator* allocator, ArgumentTypes arguments)
-		: allocator(allocator)
-	{
-		data = allocator.New<Type, ArgumentTypes>(arguments);
-		referenceCount = allocator.New<UInt32, UInt32>(0);
+		if (data)
+		{
+			referenceCount<>++;
+		}
 	}
 
 	~Shared()
 	{
+		if (!data)
+		{
+			return;
+		}
+
 		if (referenceCount == 1)
 		{
-			allocator.Delete<Type>(data);
-			allocator.Delete<UInt32>(referenceCount);
+			delete data;
+			delete referenceCount;
 		}
 		else
 		{
@@ -53,7 +44,7 @@ public mut class Shared<type Type>
 
 	public operator Type*()
 	{
-		if (data == null)
+		if (!data)
 		{
 			throw NullPointerError;
 		}
