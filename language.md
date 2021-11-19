@@ -234,6 +234,56 @@ A subroutine the is run in the context of a class. Declaration:
 // public Int32 Sum<UInt64 count>(Int32[] array) { /* function body */ }
 ```
 
+Classes can also implement their own operators. There are four types of operator:
+
+1. Non mutating binary operators:
+
+   ```c++
+   /* declaration data */ Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
+   // public Float16 operator+(Float16 other) { /* compute and return result */ }
+   ```
+   
+   Non mutating binary operators must not be `MUT` since that would be unexpected behavior.
+   
+2. Mutating binary operators:
+
+   ```c++
+   /* declaration data */ Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
+   // public void operator+=(Float16 other) { /* mutate data */ }
+   ```
+
+   Mutating binary operators are `MUT` by default.
+
+3. Non mutating unary operators:
+
+   ```c++
+   /* declaration data */ Type OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
+   // public Float16 operator-() { /* compute and return result */ }
+   ```
+
+   Non mutating unary operators must not be `MUT` since that would be unexpected behavior.
+
+   The explicit and implicit cast operators also are non mutating unary operators:
+
+   ```c++
+   /* declaration data */ OPERATOR [LESS] Type [GREATER] ROUND_OB ROUND_CB Body
+   // public operator<Int16>() { /* compute and return result */ } // explicit
+   // public operator Float64() { /* compute and return result */ } // implicit
+   // public operator<FloatType Type>() { /* compute and return result */ } // templated explicit
+   ```
+
+   The cast operators don't need a return type since the return type can be inferred from the cast type. Explicit casts can be templated because the syntax allows it.
+
+4. Mutating unary operators:
+
+   ```c++
+   /* declaration data */ Type OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
+   // public Float16 operator++() { /* increment and return result */ }
+   ```
+
+   Mutating unary operators are `MUT` by default.
+
+
 ##### Constructors
 
 A constructor is a method that is used to initialize an object. The constructor is `MUT` by default and can be invoked in the declaration of immutable variables. Invoking a constructor outside of the variable declaration requires the variable to be mutable. There are two special types of constructor:
