@@ -252,7 +252,15 @@ Classes can also implement their own operators. There are four types of operator
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
-   Mutating binary operators are `MUT` by default.
+   Mutating binary operators are `MUT` by default. Note that calls to mutating binary operators get replaced either by `set()` or `operator=` and the corresponding non mutating binary operator if the operator has not been implemented or is inaccessible (either visibility or mutability). An example for this case is when a field implements a getter that returns an immutable copy or reference:
+
+   ```c++
+   public UInt64 number { public void set(UInt64 newNumber) { /* ... */ } public UInt64 get() { /* ... */ } }
+   
+   number += 1;
+   // Calls to operator+= get converted to = operator+
+   number = number + 1;
+   ```
 
 3. Non mutating unary operators:
 
@@ -281,7 +289,18 @@ Classes can also implement their own operators. There are four types of operator
    // public Float16 operator++() { /* increment and return result */ }
    ```
 
-   Mutating unary operators are `MUT` by default.
+   Mutating unary operators are `MUT` by default. Note that calls to mutating unary operators get replaced by calls to mutating binary operators if the operator has not been implemented or is inaccessible (either visibility or mutability). An example for this case is when a field implements a getter that returns an immutable copy or reference:
+   
+   ```c++
+   public UInt64 number { public void set(UInt64 newNumber) { /* ... */ } public UInt64 get() { /* ... */ } }
+   
+   number++;
+   // Calls to operator++ first get converted to operator+=
+   number += 1;
+   // Calls to operator+= get converted to = operator+
+   number = number + 1;
+   ```
+   
 
 
 ##### Constructors
@@ -339,7 +358,7 @@ ERROR IDENTIFIER SEMICOLON // error MyError;
 ERROR IDENTIFIER EQUALS INT_LITERAL SEMICOLON // error MyError = 1;
 ```
 
-Errors can be thrown using `throw`, caught using `try` and `catch` cast to different integer types and therefore passed as a argument to `Strict.System.System.Exit(Int32)`.
+Errors can be thrown using `throw`, caught using `try` and `catch` cast to different integer types and therefore passed as a argument to `Strict.Core.System.Exit(Int32)`.
 
 ### Expressions
 
