@@ -198,7 +198,7 @@ A template is a comma separated list of type name - name pairs. The type name ca
 
 ##### Fields
 
-A class member that can store data. A field can be declared `INLINE` which would mean, that it is an interface to access the class through getters and setters without storing any data. Fields are declared like this:
+A class member that can store data. A field can be declared `INLINE` which would mean, that it is an interface to access thcapacity e class through getters and setters without storing any data. Fields are declared like this:
 
 ```c++
 /* declaration data */ Type IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
@@ -252,7 +252,7 @@ Classes can also implement their own operators. There are four types of operator
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
-   Mutating binary operators are `MUT` by default. Note that calls to mutating binary operators get replaced either by `set()` or `operator=` and the corresponding non mutating binary operator if the operator has not been implemented or is inaccessible (either visibility or mutability). An example for this case is when a field implements a getter that returns an immutable copy or reference:
+   Mutating binary operators are `MUT` by default. Note that calls to mutating binary operators get replaced either by `set()` or a call to the copy constructor and the corresponding non mutating binary operator if the operator has not been implemented or is inaccessible (either visibility or mutability). An example for this case is when a field implements a getter that returns an immutable copy or reference:
 
    ```c++
    public UInt64 number { public void set(UInt64 newNumber) { /* ... */ } public UInt64 get() { /* ... */ } }
