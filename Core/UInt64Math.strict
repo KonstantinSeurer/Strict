@@ -1,0 +1,7 @@
+
+using Strict.Core.Math;
+
+public singleton UInt64Math : Math<UInt64>
+{
+
+}

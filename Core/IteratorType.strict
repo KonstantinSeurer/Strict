@@ -1,0 +1,7 @@
+
+public type IteratorType<type ElementType>
+{
+	public void operator++();
+	public Bool IsValid();
+	public operator ElementType*();
+}

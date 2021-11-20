@@ -1,0 +1,16 @@
+
+using Strict.Core.IteratorType;
+
+public virtual mut class Collection<type Type>
+{
+	public virtual UInt64 getSize();
+
+	public Bool IsEmpty()
+	{
+		return size > 0;
+	}
+
+	public virtual operator IteratorType<Type>();
+
+	public virtual void Clear() mut;
+}

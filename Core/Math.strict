@@ -1,0 +1,30 @@
+
+using Strict.Core.NumericType;
+
+public class Math<NumericType Type>
+{
+	public NumericType Min(NumericType a, NumericType b)
+	{
+		return a < b ? a : b;
+	}
+
+	public NumericType Max(NumericType a, NumericType b)
+	{
+		return a > b ? a : b;
+	}
+
+	public NumericType Clamp(NumericType number, NumericType min, NumericType max)
+	{
+		if (number < min)
+		{
+			return min;
+		}
+
+		if (number > max)
+		{
+			return max;
+		}
+
+		return number;
+	}
+}

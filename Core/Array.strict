@@ -1,0 +1,77 @@
+
+using Strict.Core.Collection;
+using Strict.Core.CopyType;
+using Strict.Core.UInt64Math;
+
+public mut class Array<CopyType ElementType> : Collection<ElementType>
+{
+	private ElementType[] elements;
+
+	public mut UInt64 capacity
+	{
+		public void set(UInt64 newCapacity)
+		{
+			mut ElementType[] newElements = new ElementType[newCapacity];
+
+			UInt64 newLength = UInt64Math.Min(length, newCapacity);
+
+			for (UInt64 elementIndex = 0; elementIndex < newLength; elementIndex++)
+			{
+				newElements[elementIndex] = elements[elementIndex];
+			}
+
+			for (UInt64 elementIndex = newLength; elementIndex < length; elementIndex++)
+			{
+				newElements[elementIndex].~ElementType();
+			}
+
+			elements = newElements;
+			capacity = newCapacity;
+			length = newLength;
+		}
+
+		public UInt64 get()
+		{
+			return capacity;
+		}
+	};
+
+	public mut UInt64 length
+	{
+		public void set(UInt64 newLength)
+		{
+			if (capacity < newLength)
+			{
+				capacity += UInt64Math.Max(newLength - capacity, capacity >> 1);
+			}
+
+			length = newLength;
+		}
+
+		public UInt64 get()
+		{
+			return length;
+		}
+	};
+
+	public UInt64 getSize()
+	{
+		return length;
+	}
+
+	public operator ArrayIterator<ElementType>()
+	{
+		return ArrayIterator<ElementType>(elements, length);
+	}
+
+	public void Clear() mut
+	{
+		capacity = 0;
+	}
+
+	public void Add(ElementType& element) mut
+	{
+		length++;
+		elements[length - 1] = element;
+	}
+}

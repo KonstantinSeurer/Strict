@@ -1,0 +1,15 @@
+
+{
+	"type": "INLINE",
+	"units":
+	[
+		"CopyType",
+		"NumericType",
+		"Math",
+		"UInt64Math",
+		"IteratorType",
+		"ArrayIterator",
+		"Collection",
+		"Array"
+	]
+}

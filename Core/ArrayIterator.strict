@@ -1,0 +1,27 @@
+
+public mut class ArrayIterator<type ElementType>
+{
+	private ElementType[] elements;
+	private UInt64 length;
+	private mut UInt64 index;
+
+	public ArrayIterator(ElementType[] elements, UInt64 length)
+		: elements(elements), length(length), index(index)
+	{
+	}
+
+	public void operator++()
+	{
+		index++;
+	}
+
+	public Bool IsValid()
+	{
+		return index < length;
+	}
+
+	public operator ElementType*()
+	{
+		return elements[index];
+	}
+}

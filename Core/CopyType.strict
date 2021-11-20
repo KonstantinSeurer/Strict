@@ -1,0 +1,6 @@
+
+type CopyType
+{
+	public CopyType();
+	public CopyType(CopyType& a);
+}
