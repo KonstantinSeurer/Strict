@@ -1,2 +1,2 @@
 
-error OutOfMemoryError = 1;
+public error OutOfMemoryError = 1;

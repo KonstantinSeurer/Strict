@@ -1,2 +1,2 @@
 
-error NullPointerError;
+public error NullPointerError;
