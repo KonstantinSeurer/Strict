@@ -105,6 +105,7 @@ The grammer of the language is described using the following syntax:
 - `TOKEN1|TOKEN2`: A arbitrary combination of the declared tokens or language constructs. (or)
 - `TOKEN1||TOKEN2`: Only one of the declared tokens or language constructs. (xor)
 - `...`: Can occur multiple times.
+- `IDENTIFIER:`: Declare a language component.
 
 ### Language structure
 
@@ -159,14 +160,23 @@ The module information is stored in a `module.json` file located at the root of 
 
 #### Units
 
-A unit is a translation unit that can contains a class, singleton or error.
+A unit is a translation unit that can contains a class, singleton, error or type. A unit also has a list of dependencies defines by `USING` statements:
+
+```c++
+Using:
+USING {IDENTIFIER [PERIOD]}... SEMICOLON
+// using Strict.Memory.Shared;
+```
+
+
 
 #### Classes
 
 A data type that can have a set of member variables and methods. A class is declared the following way:
 
 ```c++
-{PUBLIC|PRIVATE|PROTECTED|INTERNAL} [MUT] CLASS IDENTIFIER [Template] [COLON {IDENTIFIER [COMMA]}...] /* class body */
+Class:
+{PUBLIC|PRIVATE|PROTECTED|INTERNAL} [MUT] CLASS IDENTIFIER [Template] [COLON {IDENTIFIER [COMMA]}...] CURLY_OB [Method|Field|Constructor]... [Destructor] CURLY_CB
 // public mut class Array<type ElementType> : Collection<ElementType> { ... }
 ```
 
@@ -190,8 +200,11 @@ Possible visibility modifiers:
 Declarations can also have template parameters that are declared the following way:
 
 ```c++
-/* declaration data */ IDENTIFIER LESS {{TYPE||Type} IDENTIFIER [COMMA]}... GREATER /* definition */
-// public Type Add<NumericType Type>(Type[] a, Type[] b, UInt64 count)
+DeclarationFlag:
+{PUBLIC|PRIVATE|PROTECTED|INTERNAL|MUT|IMPURE|{VIRTUAL||EXTERNAL}}
+Template:
+LESS {{Type||TYPE} IDENTIFIER}... GREATER
+// <type ElementType, UInt64 length>
 ```
 
 A template is a comma separated list of type name - name pairs. The type name can be a real data type which would allow you to pass data of the type as a template parameter. The type can also be a generic type like `TYPE`  or a type declaration which would allow you to declare variables of that type, ... The template parameters get inlined at compile time.
@@ -201,7 +214,8 @@ A template is a comma separated list of type name - name pairs. The type name ca
 A class member that can store data. A field can be declared `INLINE` which would mean, that it is an interface to access thcapacity e class through getters and setters without storing any data. Fields are declared like this:
 
 ```c++
-/* declaration data */ Type IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
+Field:
+DeclarationFlag... Type IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
 // public Int32 number { /* getters and setters */ } = 0;
 ```
 
@@ -212,7 +226,7 @@ Getter:
 - Can't be declared as `MUT` and inherits the visibility flags of the field declaration.
 
 ```c++
-/* declaration data */ Type GET Body
+DeclarationFlag... Type GET Body
 // public Int32 get { /* return data */ }
 ```
 
@@ -221,7 +235,7 @@ Setter:
 - Automatically has the `MUT` flag set and inherits the visibility flags of the field declaration.
 
 ```c++
-/* declaration data */ Type SET ROUND_OB Type IDENTIFIER ROUND_CB Body
+DeclarationFlag... Type SET ROUND_OB Type IDENTIFIER ROUND_CB Body
 // public Int32 set(Int32 newNumber) { /* set data */ }
 ```
 
@@ -230,7 +244,8 @@ Setter:
 A subroutine the is run in the context of a class. Declaration:
 
 ```c++
-/* declaration data */ Type IDENTIFIER ROUND_OB Arguments ROUND_CB Body
+Method:
+DeclarationFlag... Type IDENTIFIER [Template] ROUND_OB Arguments ROUND_CB Body
 // public Int32 Sum<UInt64 count>(Int32[] array) { /* function body */ }
 ```
 
@@ -239,7 +254,7 @@ Classes can also implement their own operators. There are four types of operator
 1. Non mutating binary operators:
 
    ```c++
-   /* declaration data */ Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
    // public Float16 operator+(Float16 other) { /* compute and return result */ }
    ```
    
@@ -248,7 +263,7 @@ Classes can also implement their own operators. There are four types of operator
 2. Mutating binary operators:
 
    ```c++
-   /* declaration data */ Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
@@ -265,7 +280,7 @@ Classes can also implement their own operators. There are four types of operator
 3. Non mutating unary operators:
 
    ```c++
-   /* declaration data */ Type OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
+   DeclarationFlag... Type OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
    // public Float16 operator-() { /* compute and return result */ }
    ```
 
@@ -274,7 +289,7 @@ Classes can also implement their own operators. There are four types of operator
    The explicit and implicit cast operators also are non mutating unary operators:
 
    ```c++
-   /* declaration data */ OPERATOR [LESS] Type [GREATER] ROUND_OB ROUND_CB Body
+   DeclarationFlag... OPERATOR [LESS] Type [GREATER] ROUND_OB ROUND_CB Body
    // public operator<Int16>() { /* compute and return result */ } // explicit
    // public operator Float64() { /* compute and return result */ } // implicit
    // public operator<FloatType Type>() { /* compute and return result */ } // templated explicit
@@ -285,7 +300,7 @@ Classes can also implement their own operators. There are four types of operator
 4. Mutating unary operators:
 
    ```c++
-   /* declaration data */ Type OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
+   DeclarationFlag... Type OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
    // public Float16 operator++() { /* increment and return result */ }
    ```
 
@@ -322,7 +337,8 @@ A constructor is a method that is used to initialize an object. The constructor 
 Constructor declaration:
 
 ```c++
-/* declaration data */ IDENTIFIER ROUND_OB Arguments ROUND_CB [COLON {IDENTIFIER ROUND_OB Expression ROUND_CB [COMMA]}...] Body
+Constructor:
+DeclarationFlag... IDENTIFIER ROUND_OB ArgumeDestructornts ROUND_CB [COLON {IDENTIFIER ROUND_OB Expression ROUND_CB [COMMA]}...] Body
 // public String(UInt16[] characters)
 //     : data(characters), length(StringHelper.length<UInt16>(characters)) { /* function body */ } // normal constructor
 // public String<IntegerType CharacterType>(CharacterType[] characters)
@@ -341,7 +357,8 @@ Destructors are run at the end of the lifetime of a class, usually when exiting 
 Destructor declaration:
 
 ```c++
-/* declaration data */ TILDE IDENTIFIER ROUND_OB ROUND_CB Body
+Destructor:
+DeclarationFlag... TILDE IDENTIFIER ROUND_OB ROUND_CB Body
 // public ~String() { /* function body */ }
 ```
 
@@ -354,8 +371,10 @@ A singleton is a class with the exception that it can only have a default constr
 Errors are declared the following way:
 
 ```c++
-ERROR IDENTIFIER SEMICOLON // error MyError;
-ERROR IDENTIFIER EQUALS INT_LITERAL SEMICOLON // error MyError = 1;
+Error:
+ERROR IDENTIFIER [EQUALS INT_LITERAL] SEMICOLON
+// error MyError;
+// error MyError = 1;
 ```
 
 Errors can be thrown using `throw`, caught using `try` and `catch` cast to different integer types and therefore passed as a argument to `Strict.Core.System.Exit(Int32)`.
@@ -363,6 +382,8 @@ Errors can be thrown using `throw`, caught using `try` and `catch` cast to diffe
 There also is a list of predefined errors that are thrown by code generated by the compiler:
 
 - `OutOfMemoryError = 1`: Thrown by `new`.
+
+#### Types
 
 ### Expressions
 
