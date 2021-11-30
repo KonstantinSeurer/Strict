@@ -176,7 +176,7 @@ A data type that can have a set of member variables and methods. A class is decl
 
 ```c++
 Class:
-{PUBLIC|PRIVATE|PROTECTED|INTERNAL} [MUT] CLASS IDENTIFIER [Template] [COLON {IDENTIFIER [COMMA]}...] CURLY_OB [Method|Field|Constructor]... [Destructor] CURLY_CB
+DeclarationFlag... CLASS IDENTIFIER [Template] [COLON {IDENTIFIER [COMMA]}...] CURLY_OB [Method|Field|Constructor]... [Destructor] CURLY_CB
 // public mut class Array<type ElementType> : Collection<ElementType> { ... }
 ```
 
@@ -203,7 +203,7 @@ Declarations can also have template parameters that are declared the following w
 DeclarationFlag:
 {PUBLIC|PRIVATE|PROTECTED|INTERNAL|MUT|IMPURE|{VIRTUAL||EXTERNAL}}
 Template:
-LESS {{Type||TYPE} IDENTIFIER}... GREATER
+LESS {{IDENTIFIER||Type||DataType||TYPE} IDENTIFIER}... GREATER
 // <type ElementType, UInt64 length>
 ```
 
@@ -215,7 +215,7 @@ A class member that can store data. A field can be declared `INLINE` which would
 
 ```c++
 Field:
-DeclarationFlag... Type IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
+DeclarationFlag... DataType IDENTIFIER [CURLY_OB [Getter|Setter]... CURLY_CB] [EQUALS Expression] SEMICOLON
 // public Int32 number { /* getters and setters */ } = 0;
 ```
 
@@ -226,7 +226,7 @@ Getter:
 - Can't be declared as `MUT` and inherits the visibility flags of the field declaration.
 
 ```c++
-DeclarationFlag... Type GET Body
+DeclarationFlag... DataType GET Body
 // public Int32 get { /* return data */ }
 ```
 
@@ -235,7 +235,7 @@ Setter:
 - Automatically has the `MUT` flag set and inherits the visibility flags of the field declaration.
 
 ```c++
-DeclarationFlag... Type SET ROUND_OB Type IDENTIFIER ROUND_CB Body
+DeclarationFlag... DataType SET ROUND_OB Type IDENTIFIER ROUND_CB Body
 // public Int32 set(Int32 newNumber) { /* set data */ }
 ```
 
@@ -245,7 +245,7 @@ A subroutine the is run in the context of a class. Declaration:
 
 ```c++
 Method:
-DeclarationFlag... Type IDENTIFIER [Template] ROUND_OB Arguments ROUND_CB Body
+DeclarationFlag... DataType IDENTIFIER [Template] ROUND_OB Arguments ROUND_CB Body
 // public Int32 Sum<UInt64 count>(Int32[] array) { /* function body */ }
 ```
 
@@ -254,7 +254,7 @@ Classes can also implement their own operators. There are four types of operator
 1. Non mutating binary operators:
 
    ```c++
-   DeclarationFlag... Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
    // public Float16 operator+(Float16 other) { /* compute and return result */ }
    ```
    
@@ -263,7 +263,7 @@ Classes can also implement their own operators. There are four types of operator
 2. Mutating binary operators:
 
    ```c++
-   DeclarationFlag... Type OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
@@ -280,7 +280,7 @@ Classes can also implement their own operators. There are four types of operator
 3. Non mutating unary operators:
 
    ```c++
-   DeclarationFlag... Type OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
    // public Float16 operator-() { /* compute and return result */ }
    ```
 
@@ -289,7 +289,7 @@ Classes can also implement their own operators. There are four types of operator
    The explicit and implicit cast operators also are non mutating unary operators:
 
    ```c++
-   DeclarationFlag... OPERATOR [LESS] Type [GREATER] ROUND_OB ROUND_CB Body
+   DeclarationFlag... OPERATOR [LESS] DataType [GREATER] ROUND_OB ROUND_CB Body
    // public operator<Int16>() { /* compute and return result */ } // explicit
    // public operator Float64() { /* compute and return result */ } // implicit
    // public operator<FloatType Type>() { /* compute and return result */ } // templated explicit
@@ -300,7 +300,7 @@ Classes can also implement their own operators. There are four types of operator
 4. Mutating unary operators:
 
    ```c++
-   DeclarationFlag... Type OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
    // public Float16 operator++() { /* increment and return result */ }
    ```
 
@@ -338,7 +338,7 @@ Constructor declaration:
 
 ```c++
 Constructor:
-DeclarationFlag... IDENTIFIER ROUND_OB ArgumeDestructornts ROUND_CB [COLON {IDENTIFIER ROUND_OB Expression ROUND_CB [COMMA]}...] Body
+DeclarationFlag... IDENTIFIER ROUND_OB Arguments ROUND_CB [COLON {IDENTIFIER ROUND_OB Expression ROUND_CB [COMMA]}...] Body
 // public String(UInt16[] characters)
 //     : data(characters), length(StringHelper.length<UInt16>(characters)) { /* function body */ } // normal constructor
 // public String<IntegerType CharacterType>(CharacterType[] characters)
@@ -384,6 +384,26 @@ There also is a list of predefined errors that are thrown by code generated by t
 - `OutOfMemoryError = 1`: Thrown by `new`.
 
 #### Types
+
+A type specifies the properties an object of the type must have. Types are mainly used when declaring templates since templates with a generic `TYPE` argument are almost useless. The properties of a type must not be declared with an implementation (Function declarations end with `SEMICOLON` instead of a block).
+
+```c++
+Type:
+DeclarationFlag... TYPE [IDENTIFIER] [Template] [COLON {IDENTIFIER [COMMA]}...] CURLY_OB [Method|Field|Constructor]... CURLY_CB
+// type CopyType { public CopyType(CopyType& source); }
+```
+
+Note that the `IDENTIFIER` is optional to allow inline type declarations.
+
+Data types are used to specify the type of a variable, return type or a template argument that is not a type itself:
+
+```c++
+DataType:
+[MUT] DataType [STAR||AND||{CURLY_OB [Expression] CURLY_CB}]
+ROUND_OB DataType ROUND_OB
+IDENTIFIER [Template]
+// mut Vector<Float32, 3>[]
+```
 
 ### Expressions
 
