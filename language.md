@@ -96,6 +96,7 @@
 | `EQUALS`       | `=`      |                                                              |
 | `LESS`         | `<`      |                                                              |
 | `GREATER`      | `>`      |                                                              |
+| `POWER`        | `^`      |                                                              |
 
 ## Language concepts
 
@@ -257,7 +258,7 @@ Classes can also implement their own operators. There are four types of operator
 1. Non mutating binary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB DataType IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR||PLUS||MINUS||SLASH||AND||OR||POWER||GREATER||LESS||EQUAL||{NOT EQUAL}||{GREATER EQUAL}||{LESS EQUAL}} ROUND_OB DataType IDENTIFIER ROUND_CB Body
    // public Float16 operator+(Float16 other) { /* compute and return result */ }
    ```
    
@@ -266,7 +267,7 @@ Classes can also implement their own operators. There are four types of operator
 2. Mutating binary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB DataType IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR||PLUS||MINUS||SLASH||AND||OR||POWER} EQUAL ROUND_OB DataType IDENTIFIER ROUND_CB Body
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
@@ -283,7 +284,7 @@ Classes can also implement their own operators. There are four types of operator
 3. Non mutating unary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {MINUS|NOT|TILDE} ROUND_OB ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {MINUS||NOT||TILDE} ROUND_OB ROUND_CB Body
    // public Float16 operator-() { /* compute and return result */ }
    ```
 
@@ -303,7 +304,7 @@ Classes can also implement their own operators. There are four types of operator
 4. Mutating unary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {{PLUS PLUS}|{MINUS MINUS}} ROUND_OB ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {{PLUS PLUS}||{MINUS MINUS}} ROUND_OB ROUND_CB Body
    // public Float16 operator++() { /* increment and return result */ }
    ```
 
