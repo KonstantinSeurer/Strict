@@ -46,6 +46,7 @@
 | `PROTECTED` | `protected` |             |
 | `INTERNAL`  | `internal`  |             |
 | `EXTERNAL`  | `external`  |             |
+| `INLINE`    | `inline`    |             |
 | `MUT`       | `mut`       |             |
 | `IMPURE`    | `impure`    |             |
 | `VIRTUAL`   | `virtual`   |             |
@@ -235,7 +236,7 @@ Setter:
 - Automatically has the `MUT` flag set and inherits the visibility flags of the field declaration.
 
 ```c++
-DeclarationFlag... DataType SET ROUND_OB Type IDENTIFIER ROUND_CB Body
+DeclarationFlag... DataType SET ROUND_OB DataType IDENTIFIER ROUND_CB Body
 // public Int32 set(Int32 newNumber) { /* set data */ }
 ```
 
@@ -245,8 +246,10 @@ A subroutine the is run in the context of a class. Declaration:
 
 ```c++
 Method:
-DeclarationFlag... DataType IDENTIFIER [Template] ROUND_OB Arguments ROUND_CB Body
+DeclarationFlag... DataType IDENTIFIER [Template] ROUND_OB [Parameters] ROUND_CB Body
 // public Int32 Sum<UInt64 count>(Int32[] array) { /* function body */ }
+Parameters:
+{DataType IDENTIFIER [COMMA]}...
 ```
 
 Classes can also implement their own operators. There are four types of operator:
@@ -254,7 +257,7 @@ Classes can also implement their own operators. There are four types of operator
 1. Non mutating binary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR|GREATER|LESS|EQUAL|{NOT EQUAL}|{GREATER EQUAL}|{LESS EQUAL}} ROUND_OB DataType IDENTIFIER ROUND_CB Body
    // public Float16 operator+(Float16 other) { /* compute and return result */ }
    ```
    
@@ -263,7 +266,7 @@ Classes can also implement their own operators. There are four types of operator
 2. Mutating binary operators:
 
    ```c++
-   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB Type IDENTIFIER ROUND_CB Body
+   DeclarationFlag... DataType OPERATOR {STAR|PLUS|MINUS|SLASH|AND|OR} EQUAL ROUND_OB DataType IDENTIFIER ROUND_CB Body
    // public void operator+=(Float16 other) { /* mutate data */ }
    ```
 
