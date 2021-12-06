@@ -1,7 +1,7 @@
 
 using Strict.Core.CopyType;
 
-type NumericType : CopyType
+public type NumericType : CopyType
 {
 	public NumericType operator+(NumericType other);
 	public NumericType operator-(NumericType other);
