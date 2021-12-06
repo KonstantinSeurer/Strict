@@ -3,14 +3,14 @@ using Strict.Core.IteratorType;
 
 public virtual mut class Collection<type Type>
 {
-	public virtual UInt64 getSize();
+	public UInt64 getSize() virtual;
 
 	public Bool IsEmpty()
 	{
 		return size > 0;
 	}
 
-	public virtual operator IteratorType<Type>();
+	public operator IteratorType<Type>() virtual;
 
-	public virtual void Clear() mut;
+	public void Clear() mut virtual;
 }
