@@ -20,12 +20,9 @@ public mut class Array<CopyType ElementType> : Collection<ElementType>
 				newElements[elementIndex] = elements[elementIndex];
 			}
 
-			for (UInt64 elementIndex = newLength; elementIndex < length; elementIndex++)
-			{
-				newElements[elementIndex].~ElementType();
-			}
-
+			delete elements;
 			elements = newElements;
+
 			capacity = newCapacity;
 			length = newLength;
 		}
@@ -53,6 +50,16 @@ public mut class Array<CopyType ElementType> : Collection<ElementType>
 			return length;
 		}
 	};
+
+	public Array()
+	{
+		capacity = 4;
+	}
+
+	~Array()
+	{
+		delete elements;
+	}
 
 	public UInt64 getSize()
 	{
