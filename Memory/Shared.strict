@@ -16,7 +16,7 @@ public mut class Shared<type Type>
 	}
 
 	public Shared(Shared<Type>& pointer)
-		: data(pointer.data), allocator(pointer.allocator), referenceCount(pointer.referenceCount)
+		: data(pointer.data), referenceCount(pointer.referenceCount)
 	{
 		if (data)
 		{
