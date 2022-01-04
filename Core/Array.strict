@@ -2,6 +2,7 @@
 using Strict.Core.Collection;
 using Strict.Core.CopyType;
 using Strict.Core.UInt64Math;
+using Strict.Core.ArrayIterator;
 
 public mut class Array<CopyType ElementType> : Collection<ElementType>
 {
