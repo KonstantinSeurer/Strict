@@ -3,17 +3,17 @@ using Strict.Core.NumericType;
 
 public class Math<NumericType Type>
 {
-	public NumericType Min(NumericType a, NumericType b)
+	public Type Min(Type a, Type b)
 	{
 		return a < b ? a : b;
 	}
 
-	public NumericType Max(NumericType a, NumericType b)
+	public Type Max(Type a, Type b)
 	{
 		return a > b ? a : b;
 	}
 
-	public NumericType Clamp(NumericType number, NumericType min, NumericType max)
+	public Type Clamp(Type number, Type min, Type max)
 	{
 		if (number < min)
 		{
