@@ -10,7 +10,5 @@ public virtual mut class Collection<type Type>
 		return GetSize() == 0;
 	}
 
-	public operator IteratorType<Type>() virtual;
-
 	public void Clear() mut virtual;
 }
