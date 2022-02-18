@@ -20,7 +20,7 @@ public mut class ArrayIterator<type ElementType>
 		return index < length;
 	}
 
-	public operator ElementType*()
+	public operator<ElementType&>()
 	{
 		return elements[index];
 	}
