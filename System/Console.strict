@@ -9,8 +9,8 @@ public singleton Console
     {
     }
 
-    public external void PrintOut(Int8[] string);
-    public external void PrintErr(Int8[] string);
+    public void PrintOut(Int8[] string) external;
+    public void PrintErr(Int8[] string) external;
 
     public void Print(int stream, Int8[] string)
     {
