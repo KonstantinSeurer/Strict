@@ -1,0 +1,27 @@
+ 
+public singleton Console
+{
+    public int OUT = 0;
+    public int ERR = 1;
+    public int IN = 2;
+
+    public Console()
+    {
+    }
+
+    public external void PrintOut(Int8[] string);
+    public external void PrintErr(Int8[] string);
+
+    public void Print(int stream, Int8[] string)
+    {
+        if (stream == OUT)
+        {
+            PrintOut(string);
+        }
+        else if (stream == ERR)
+        {
+            PrintErr(string);
+        }
+    }
+
+}
