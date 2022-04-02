@@ -1,9 +1,9 @@
  
 public singleton Console
 {
-    public int OUT = 0;
-    public int ERR = 1;
-    public int IN = 2;
+    public Int32 OUT = 0;
+    public Int32 ERR = 1;
+    public Int32 IN = 2;
 
     public Console()
     {
@@ -12,7 +12,7 @@ public singleton Console
     public void PrintOut(Int8[] string) external;
     public void PrintErr(Int8[] string) external;
 
-    public void Print(int stream, Int8[] string)
+    public void Print(Int32 stream, Int8[] string)
     {
         if (stream == OUT)
         {
