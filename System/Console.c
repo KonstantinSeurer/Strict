@@ -1,12 +1,12 @@
 
 #include <stdio.h>
 
-void ConsolePrintOut(const char *string)
+void Console_PrintOut(const char *string)
 {
     fprintf(stdout, "%s", string);
 }
 
-void ConsolePrintErr(const char *string)
+void Console_PrintErr(const char *string)
 {
     fprintf(stderr, "%s", string);
 }
